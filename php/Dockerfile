@@ -28,8 +28,11 @@ RUN docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-di
 RUN pecl install /home/memcached.tgz && echo "extension=memcached.so" > /usr/local/etc/php/conf.d/memcached.ini \
         && pecl install /home/memcache.tgz && echo "extension=memcache.so" > /usr/local/etc/php/conf.d/memcache.ini \
         && pecl install /home/xhprof.tgz && echo "extension=xhprof.so" > /usr/local/etc/php/conf.d/xhprof.ini \
-        && pecl install /home/yaf.tgz && echo "extension=yaf.so" > /usr/local/etc/php/conf.d/yaf.ini \
         && pecl install /home/xdebug.tgz && echo "zend_extension=/usr/local/lib/php/extensions/no-debug-non-zts-20131226/xdebug.so" > /usr/local/etc/php/conf.d/xdebug.ini
+RUN cd /home \
+    && tar -xvf yaf.tgz \
+    && mv yaf-* yaf \
+    && cd yaf && phpize && ./configure && make && make install && echo "extension=yaf.so" > /usr/local/etc/php/conf.d/yaf.ini
 
 # PHP config
 ADD php.ini    /usr/local/etc/php/php.ini
