@@ -14,8 +14,6 @@ php:
     links:
       - "mysql"
       - "memcache"
-      - "redis"
-      - "gearman"
     volumes:
       - ~/opt:/opt
 
@@ -32,15 +30,3 @@ memcache:
     build: ./memcache
     ports:
       - "11211:11211"
-
-redis:
-    build: ./redis
-    ports:
-      - "6379:6379"
-
-gearman:
-    build: ./gearman
-    ports:
-      - "4730:4730"
-    volumes:
-      - ~/opt:/opt

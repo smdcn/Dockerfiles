@@ -4,7 +4,6 @@ FROM php:5.6-fpm
 ADD sources.list    /etc/apt/sources.list
 RUN apt-get update && apt-get install -y \
         git \
-        libgearman-dev \
         libmemcached-dev \
         libmcrypt-dev \
         libfreetype6-dev \
@@ -15,13 +14,10 @@ RUN apt-get update && apt-get install -y \
 
 # Install PHP extensions
 COPY memcached.tgz /home/memcached.tgz
-COPY gearman.tgz /home/gearman.tgz
-COPY redis.tgz /home/redis.tgz
-COPY msgpack.tgz /home/msgpack.tgz
 COPY xdebug.tgz /home/xdebug.tgz
 COPY memcache.tgz /home/memcache.tgz
 COPY xhprof.tgz /home/xhprof.tgz
-COPY cphalcon.tgz /home/cphalcon.tgz
+COPY yaf.tgz /home/yaf.tgz
 
 RUN docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ \
         && docker-php-ext-install zip \
@@ -30,16 +26,10 @@ RUN docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-di
         && docker-php-ext-install mcrypt \
         && docker-php-ext-install pdo_mysql
 RUN pecl install /home/memcached.tgz && echo "extension=memcached.so" > /usr/local/etc/php/conf.d/memcached.ini \
-        && pecl install /home/gearman.tgz && echo "extension=gearman.so" > /usr/local/etc/php/conf.d/gearman.ini \
-        && pecl install /home/redis.tgz && echo "extension=redis.so" > /usr/local/etc/php/conf.d/redis.ini \
-        && pecl install /home/msgpack.tgz && echo "extension=msgpack.so" > /usr/local/etc/php/conf.d/msgpack.ini \
         && pecl install /home/memcache.tgz && echo "extension=memcache.so" > /usr/local/etc/php/conf.d/memcache.ini \
         && pecl install /home/xhprof.tgz && echo "extension=xhprof.so" > /usr/local/etc/php/conf.d/xhprof.ini \
+        && pecl install /home/yaf.tgz && echo "extension=yaf.so" > /usr/local/etc/php/conf.d/yaf.ini \
         && pecl install /home/xdebug.tgz && echo "zend_extension=/usr/local/lib/php/extensions/no-debug-non-zts-20131226/xdebug.so" > /usr/local/etc/php/conf.d/xdebug.ini
-RUN cd /home \
-    && tar -xvf cphalcon.tgz \
-    && mv cphalcon-* phalcon \
-    && cd phalcon/build && ./install && echo "extension=phalcon.so" > /usr/local/etc/php/conf.d/phalcon.ini
 
 # PHP config
 ADD php.ini    /usr/local/etc/php/php.ini
