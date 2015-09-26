@@ -23,6 +23,7 @@ RUN docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-di
         && docker-php-ext-install zip \
         && docker-php-ext-install gd \
         && docker-php-ext-install mbstring \
+        && docker-php-ext-install bcmath \
         && docker-php-ext-install mcrypt \
         && docker-php-ext-install pdo_mysql \
         && docker-php-ext-install mysqli
@@ -33,7 +34,7 @@ RUN pecl install /home/memcached.tgz && echo "extension=memcached.so" > /usr/loc
 RUN cd /home \
     && tar -xvf yaf.tgz \
     && mv yaf-* yaf \
-    && cd yaf && phpize && ./configure && make && make install && echo "extension=yaf.so" > /usr/local/etc/php/conf.d/yaf.ini
+    && cd yaf && phpize && ./configure && make && make install && echo "extension=yaf.so\nyaf.use_namespace=1" > /usr/local/etc/php/conf.d/yaf.ini
 
 # PHP config
 ADD php.ini    /usr/local/etc/php/php.ini
