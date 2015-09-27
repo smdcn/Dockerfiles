@@ -34,7 +34,7 @@ RUN pecl install /home/memcached.tgz && echo "extension=memcached.so" > /usr/loc
 RUN cd /home \
     && tar -xvf yaf.tgz \
     && mv yaf-* yaf \
-    && cd yaf && phpize && ./configure && make && make install && echo "extension=yaf.so\nyaf.use_namespace=1" > /usr/local/etc/php/conf.d/yaf.ini
+    && cd yaf && phpize && ./configure && make && make install && echo "extension=yaf.so\nyaf.use_namespace=1\nyaf.environ=dev" > /usr/local/etc/php/conf.d/yaf.ini
 
 # PHP config
 ADD php.ini    /usr/local/etc/php/php.ini
