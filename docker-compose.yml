@@ -30,3 +30,4 @@ memcache:
     build: ./memcache
     ports:
       - "11211:11211"
+    command: memcached -m 512
